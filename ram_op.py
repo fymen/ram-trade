@@ -75,7 +75,7 @@ class ram_op():
         if (simulate == 1):
             print("simulate buy ram %d" % eos_no)
         else:
-            unlock_wallet()
+            self.unlock_wallet()
     
             print("buy ram")
             cmd = cleos + "system buyram  " + op_account + " " + op_account + " " + "'" + str(eos_no) + " EOS'"
@@ -94,7 +94,7 @@ class ram_op():
                 print("sell ram error: %f" % ram_no)
                 print("buy ram")
                 
-            unlock_wallet()
+            self.unlock_wallet()
     
             cmd = cleos + "system sellram " + op_account + " " + str(int(ram_no*1024))
             print(cmd)
@@ -123,11 +123,14 @@ class ram_op():
     
 def main():
     ram = ram_op()
-    simulate = 1;
-    while 1:
-        print(ram.get_ram_price(simulate))
+    simulate = 0;
 
-        time.sleep(1)
+    ram.buy_ram(simulate, 0.001)
+    ram.sell_ram(simulate, 0.001)
+    # while 1:
+    #     print(ram.get_ram_price(simulate))
+
+    #     time.sleep(1)
 
 if __name__ == "__main__":
     main()
