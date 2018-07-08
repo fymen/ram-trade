@@ -52,7 +52,7 @@ def main():
             min_price = current_price
 
         if(op_status == OP_INIT):
-            eos2buyram = 5.0
+            eos2buyram = 4.0
 
             ram_old = ram_bought = 0
             buy_price = 0
@@ -91,7 +91,7 @@ def main():
 
         cur_time = time.strftime("%H:%M:%S")
 
-        # print("%s\t%f\t%f\t%f\top_status:%f ratio:%f bought price: %f" % (cur_time, current_price, max_price, min_price, op_status, ratio, buy_price))
+        # print("%s\t%f\t%f\t%f\top_status:%d ratio:%f bought price: %f" % (cur_time, current_price, max_price, min_price, op_status, ratio, buy_price))
 
         # f.write("%s\t%f\t%f\t%f" % (cur_time, current_price, max_price, min_price))
         # f.flush()

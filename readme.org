@@ -1,1 +1,10 @@
 Samples for python practice
+
+
+
+sudo apt install python3-numpy python3-distutils python-gnuplot
+
+git clone https://github.com/oblalex/gnuplot.py-py3k.git
+sudo python3 setup.py  install
+
+
