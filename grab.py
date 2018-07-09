@@ -64,28 +64,32 @@ def main():
             buy_price = 0
             ratio = 0
 
+            buy_count = 0
+            
             op_status = OP_FIND_BUY_POINT
             
         elif (op_status == OP_FIND_BUY_POINT):
-            if (((min_price / max_price) < 0.94) and ((current_price - min_price) < 0.0001)):
-                ram_old = ram.get_account_ram(simulate)
-                ram.buy_ram(simulate, eos2buyram)
+            if (((min_price / max_price) < 0.94) and ((current_price/max_price) < 0.94)):
+                buy_count += 1
+                if (buy_count > 10) :
+                    ram_old = ram.get_account_ram(simulate)
+                    ram.buy_ram(simulate, eos2buyram)
 
-                if (simulate == 1):
-                    ram.virtual_ram_update(eos2buyram, current_price)
+                    if (simulate == 1):
+                        ram.virtual_ram_update(eos2buyram, current_price)
                 
-                time.sleep(0.5)
-                ram_bought = ram.get_account_ram(simulate) - ram_old
-                if (ram_bought <= 0):
-                    print("bought ram error %d" % (ram_bought));
-                    break;
-                buy_price = eos2buyram / ram_bought
+                        time.sleep(0.5)
+                        ram_bought = ram.get_account_ram(simulate) - ram_old
+                        if (ram_bought <= 0):
+                            print("bought ram error %d" % (ram_bought));
+                            break;
+                        buy_price = eos2buyram / ram_bought
 
-                f_points.write("%d\t%f\n" % (i, buy_price))
-                f_points.flush()
-                boughts += 1
+                        f_points.write("%d\t%f\n" % (i, buy_price))
+                        f_points.flush()
+                        boughts += 1
 
-                op_status = OP_FIND_SELL_POINT
+                        op_status = OP_FIND_SELL_POINT
                 
         elif(op_status == OP_FIND_SELL_POINT):
             ratio = get_profit_ratio(buy_price, current_price)
@@ -111,15 +115,15 @@ def main():
         f.flush()
 
         
-        if (i % 16 == 0):
+        if (i % 4 == 0):
             plot_ram = "'test.txt' using 1 with line, "
             if (boughts > 0):
-                plot_buy_point = " 'points.txt' using 1:2, "
+                plot_buy_point = " 'points.txt' using 1:2 pointtype 148 ps 2 lc rgb \"blue\" title \"buy point\", "
             else:
                 plot_buy_point = " "
 
             if (solds > 0):
-                plot_sell_point = " 'sell_points.txt' using 1:2, "
+                plot_sell_point = " 'sell_points.txt' using 1:2 pointtype 7 ps 2 lc rgb \"red\" title \"sell point\", "
             else:
                 plot_sell_point = " "
                 
@@ -130,7 +134,7 @@ def main():
         
         i = i + 1
         if (simulate == 1) :
-            gap = 0.01
+            gap = 0.0008
         else:
             gap = 1
             
