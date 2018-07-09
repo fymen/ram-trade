@@ -39,12 +39,7 @@ def main():
     f_points = open('./points.txt', 'wt')
     f_sell_points = open('./sell_points.txt', 'wt')
 
-    # To avoid warning print from plot
-    f_points.write("0\t0.5\n")
-    f_points.flush()
-    f_sell_points.write("0\t0.5\n")
-    f_sell_points.flush()
-
+    boughts = solds = 0
     
     print("date\t\t\tcur\t\tmax\t\tmin")
 
@@ -88,6 +83,7 @@ def main():
 
                 f_points.write("%d\t%f\n" % (i, buy_price))
                 f_points.flush()
+                boughts += 1
 
                 op_status = OP_FIND_SELL_POINT
                 
@@ -99,7 +95,8 @@ def main():
 
                 f_sell_points.write("%d\t%f\n" % (i, current_price))
                 f_sell_points.flush()
-
+                solds += 1
+                
                 op_status = OP_INIT
         else:
             print("should not be here, %d" % op_status)
@@ -115,11 +112,25 @@ def main():
 
         
         if (i % 16 == 0):
-            plot.plot()
+            plot_ram = "'test.txt' using 1 with line, "
+            if (boughts > 0):
+                plot_buy_point = " 'points.txt' using 1:2, "
+            else:
+                plot_buy_point = " "
+
+            if (solds > 0):
+                plot_sell_point = " 'sell_points.txt' using 1:2, "
+            else:
+                plot_sell_point = " "
+                
+            plot_min = str(min_price) + " with line, "
+            plot_max = str(max_price) + " with line "
+
+            plot.plot(plot_ram + plot_buy_point + plot_sell_point + plot_min + plot_max)
         
         i = i + 1
         if (simulate == 1) :
-            gap = 0.001
+            gap = 0.01
         else:
             gap = 1
             

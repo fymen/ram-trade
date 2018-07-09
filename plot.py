@@ -22,9 +22,11 @@ class gnuplot():
         # g('set xrange ["16:25":"17:00"]')
         g('set grid')
 
-
-    def plot(self):
-        g.plot("'test.txt' using 1 with line, 'points.txt' using 1:2, 'sell_points.txt' using 1:2,")
+    # def set_point(self, x, y)
+    #     g("'set object circle at first " + str(x) + "," + str(y) + "radius char 0.5 fillstyle empty border lc rgb \'#aa1100\' lw 2'")
+        
+    def plot(self, plot):
+        g.plot(plot)
 
     
 def main():
