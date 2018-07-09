@@ -7,7 +7,8 @@ import time
 from numpy import *
 import Gnuplot, Gnuplot.funcutils
 
-g = Gnuplot.Gnuplot(debug=1)
+# g = Gnuplot.Gnuplot(debug=1)
+g = Gnuplot.Gnuplot()
 
 class gnuplot():
     

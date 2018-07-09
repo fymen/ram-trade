@@ -38,6 +38,13 @@ def main():
     f = open('./test.txt', 'wt')
     f_points = open('./points.txt', 'wt')
     f_sell_points = open('./sell_points.txt', 'wt')
+
+    # To avoid warning print from plot
+    f_points.write("0\t0.5\n")
+    f_points.flush()
+    f_sell_points.write("0\t0.5\n")
+    f_sell_points.flush()
+
     
     print("date\t\t\tcur\t\tmax\t\tmin")
 
