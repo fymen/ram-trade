@@ -14,7 +14,7 @@ class gnuplot():
     def __init__(self):
         
         g.title('A simple example') # (optional)
-        g('set style data linespoints') # give gnuplot an arbitrary command
+        # g('set style data linespoints') # give gnuplot an arbitrary command
         # g('set xdata time')
         # g('set timefmt "%H:%M:%S" ')
         g('set autoscale y')
@@ -23,15 +23,13 @@ class gnuplot():
 
 
     def plot(self):
-        g.plot("'1m.txt' using 1 with line")
+        g.plot("'test.txt' using 1 with line, 'points.txt' using 1:2, 'sell_points.txt' using 1:2,")
 
-
-
+    
 def main():
     plot = gnuplot()
     while 1:
         plot.plot()
-    
 
     #     print(ram.get_ram_price(simulate))
 

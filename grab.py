@@ -7,6 +7,7 @@ import time
 
 import config
 from ram_op import *
+from plot import *
 
 fee_rate = 0.005
 
@@ -31,9 +32,12 @@ def main():
     i = 0
     
     ram = ram_op()
+
+    plot = gnuplot()
     
     f = open('./test.txt', 'wt')
-    
+    f_points = open('./points.txt', 'wt')
+    f_sell_points = open('./sell_points.txt', 'wt')
     
     print("date\t\t\tcur\t\tmax\t\tmin")
 
@@ -74,7 +78,10 @@ def main():
                     print("bought ram error %d" % (ram_bought));
                     break;
                 buy_price = eos2buyram / ram_bought
-                
+
+                f_points.write("%d\t%f\n" % (i, buy_price))
+                f_points.flush()
+
                 op_status = OP_FIND_SELL_POINT
                 
         elif(op_status == OP_FIND_SELL_POINT):
@@ -82,21 +89,28 @@ def main():
             if (ratio > 0.03):
                 ram.sell_ram(simulate, ram_bought)
                 print("profit: %f EOS" % (eos2buyram * ratio) )
-                
+
+                f_sell_points.write("%d\t%f\n" % (i, current_price))
+                f_sell_points.flush()
+
                 op_status = OP_INIT
         else:
             print("should not be here, %d" % op_status)
             
         # print(get_profit(init_quantity, buy_price, current_price))
 
-        cur_time = time.strftime("%H:%M:%S")
+        # cur_time = time.strftime("%H:%M:%S")
 
         # print("%s\t%f\t%f\t%f\top_status:%d ratio:%f bought price: %f" % (cur_time, current_price, max_price, min_price, op_status, ratio, buy_price))
 
-        # f.write("%s\t%f\t%f\t%f" % (cur_time, current_price, max_price, min_price))
-        # f.flush()
+        f.write("%f\n" % (current_price))
+        f.flush()
 
-        # i = i + 1
+        
+        if (i % 16 == 0):
+            plot.plot()
+        
+        i = i + 1
         if (simulate == 1) :
             gap = 0.001
         else:
@@ -105,6 +119,8 @@ def main():
         time.sleep(gap)
 
     f.close()
+    f_points.close()
+    f_sell_points.close()
     # data.close()
     
 if __name__ == "__main__":

@@ -123,7 +123,7 @@ class ram_op():
     
 def main():
     ram = ram_op()
-    simulate = 0;
+    simulate = 1;
 
     ram.buy_ram(simulate, 0.001)
     ram.sell_ram(simulate, 0.001)
