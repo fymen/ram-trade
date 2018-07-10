@@ -14,24 +14,35 @@ import config
 # http://mainnet.eoscannon.io
 # http://mainnet.genereos.io
 # cleos = "cleos --wallet-url http://127.0.0.1:8900 -u http://mainnet.genereos.io "
-cleos = "cleos --wallet-url http://127.0.0.1:8900 -u http://api-mainnet.starteos.io "
+cleos = "cleos --wallet-url http://127.0.0.1:8900 -u http://mainnet.eoscanada.com "
 
 default_password = "PW5JdsEXgifmmdJnJvdyMpfwR6bcg6EKVb8hpcTmygNANhGrrVEU2"
 op_account = "blondebeauty"
 
-test_init_ram = 4
 
-simulate_data_file = '1m.txt'
-
-data = open(simulate_data_file, 'r')    
 
 class ram_op():
-    # def __init__(self):
+    def __init__(self):
+        self.test_init_ram = 4
+        self.simulate = False
+        
+    def open_simulate_file(self, simulate_data_file):
+        try:
+            self.data = open(simulate_data_file, 'r')
+        except IOError:
+            print("open %s error" % simulate_data_file)
+        else:
+            self.simulate = True
 
-    def get_ram_price(self, simulate):
+        return self.simulate
 
-        if (simulate):
-            price = float(data.readline())
+    def close_simulate_file(self):
+        self.data.close()
+        self.simulate = False
+        
+    def get_ram_price(self):
+        if (self.simulate):
+            price = float(self.data.readline())
             return price
             
         cmd = cleos + "get table eosio eosio rammarket"
@@ -67,12 +78,12 @@ class ram_op():
         cmd = cleos + "wallet unlock --password" + " " + default_password
         os.system(cmd)
         
-    def buy_ram(self, simulate, eos_no):
+    def buy_ram(self, eos_no):
             
         if (eos_no <= 0):
             print("buy ram error: %f" % eos_no)
 
-        if (simulate == 1):
+        if (self.simulate == True):
             print("simulate buy ram %d" % eos_no)
         else:
             self.unlock_wallet()
@@ -83,11 +94,11 @@ class ram_op():
             os.system(cmd)
 
     
-    def sell_ram(self, simulate, ram_no):
+    def sell_ram(self, ram_no):
         if (ram_no <= 0):
             print("sell ram error: %f" % ram_no)
 
-        if (simulate == 1):
+        if (self.simulate == True):
             print("simulate sell ram %d" % ram_no)
         else:
             if (ram_no <= 0):
@@ -100,9 +111,9 @@ class ram_op():
             print(cmd)
             os.system(cmd)
 
-    def get_account_ram(self, simulate):
-        if (simulate):
-            return test_init_ram
+    def get_account_ram(self):
+        if (self.simulate):
+            return self.test_init_ram
             
         cmd = cleos + "get account " + op_account + " -j"
         process = os.popen(cmd)
@@ -116,21 +127,20 @@ class ram_op():
 
 
     def virtual_ram_update(self, eos, price):
-        global test_init_ram
-        test_init_ram = test_init_ram + eos / price
+        self.test_init_ram = self.test_init_ram + eos / price
 
 
     
 def main():
     ram = ram_op()
-    simulate = 1;
+    ram.open_simulate_file('1m.txt')
 
-    ram.buy_ram(simulate, 0.001)
-    ram.sell_ram(simulate, 0.001)
-    # while 1:
-    #     print(ram.get_ram_price(simulate))
+    # ram.buy_ram(0.001)
+    # ram.sell_ram(0.001)
+    while 1:
+        print(ram.get_ram_price())
 
-    #     time.sleep(1)
+        time.sleep(1)
 
 if __name__ == "__main__":
     main()

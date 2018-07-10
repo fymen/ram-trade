@@ -16,3 +16,9 @@
 # simulate_data_file = '1m.txt'
 
 
+fee_rate = 0.005
+time_format = "%m-%d,%H:%M:%S"
+
+log_ram_price = "ram_price.txt"
+log_bought_points = "bought_points.txt"
+log_sold_points = "sold_points.txt"
