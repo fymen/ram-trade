@@ -1,10 +1,11 @@
-Samples for python practice
+A python sample for monitor, plot realtime data and act on it.
+
+#+begin_src bash
+  sudo apt install python3-numpy python3-distutils python-gnuplot
+  git clone https://github.com/oblalex/gnuplot.py-py3k.git  # Gnuplot lib depend on
+  sudo python3 setup.py  install
+#+end_src
 
 
-
-sudo apt install python3-numpy python3-distutils python-gnuplot
-
-git clone https://github.com/oblalex/gnuplot.py-py3k.git
-sudo python3 setup.py  install
 
 
